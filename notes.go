@@ -3,10 +3,12 @@ package main
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"math/rand"
 	"os"
 	"os/exec"
 	"os/user"
+	"strings"
 )
 
 var (
@@ -87,12 +89,20 @@ func recoverNote(name string) {
 func listNotes() {
 	cmd := exec.Command("ls", default_dir)
 
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-
-	err := cmd.Run()
+	stdout, err := cmd.StdoutPipe()
 	check(err)
 
+	err = cmd.Start()
+	check(err)
+
+	notes := strings.Split("stdout", " ")
+
+	err = cmd.Wait()
+	check(err)
+
+	for _, note := range notes {
+		fmt.Println(note)
+	}
 }
 
 //-----Helper Functions -------

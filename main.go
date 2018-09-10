@@ -43,7 +43,7 @@ func main() {
 	case "l":
 		listNotes()
 	default:
-		fmt.Println("No flags Supplied")
+		listNotes()
 	}
 }
 
